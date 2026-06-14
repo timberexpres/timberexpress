@@ -506,6 +506,155 @@
     /* ── SCROLL ANIMATIONS ────────────────────────────── */
     .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── PROJECTS / GALLERY MODALS ─────────────────────────────── */
+    .pmodal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 300;
+      background: rgba(0,0,0,0.85);
+      align-items: center; justify-content: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .pmodal-overlay.open { display: flex; }
+    .pmodal-box {
+      background: var(--white);
+      border-radius: 8px;
+      width: 100%; max-width: 900px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      padding: 40px 36px 48px;
+      margin: auto;
+    }
+    .pmodal-box--gallery { max-width: 1100px; }
+    .pmodal-close {
+      position: absolute; top: 16px; right: 20px;
+      background: none; border: none; font-size: 1.8rem;
+      cursor: pointer; color: var(--warm-gray); line-height: 1;
+      transition: color 0.2s;
+    }
+    .pmodal-close:hover { color: var(--forest); }
+    .pmodal-close--lb {
+      position: fixed; top: 20px; right: 24px;
+      color: var(--white); font-size: 2.2rem; z-index: 10;
+    }
+    .pmodal-close--lb:hover { color: var(--accent-lt); }
+    .pmodal-header { margin-bottom: 32px; }
+    .pmodal-header--gallery {
+      display: flex; align-items: center; gap: 20px;
+      flex-wrap: wrap; margin-bottom: 28px;
+    }
+    .pmodal-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      color: var(--forest); margin: 0;
+    }
+    .pmodal-sub { color: var(--warm-gray); font-size: 0.9rem; margin: 6px 0 0; }
+    .pmodal-back {
+      background: none; border: 2px solid var(--cream-dk);
+      color: var(--forest); font-family: var(--font-body);
+      font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 8px 16px;
+      border-radius: var(--radius); cursor: pointer;
+      transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+    }
+    .pmodal-back:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Project selector cards */
+    .pmodal-projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    .pmodal-project-card {
+      position: relative; border-radius: var(--radius);
+      overflow: hidden; cursor: pointer;
+      aspect-ratio: 4/3;
+      background: var(--cream-dk);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .pmodal-project-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+    .pmodal-project-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.4s;
+    }
+    .pmodal-project-card:hover img { transform: scale(1.05); }
+    .pmodal-project-card-label {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(20,28,50,0.85) 0%, transparent 55%);
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 14px 12px;
+    }
+    .pmodal-project-card-name {
+      color: var(--white); font-family: var(--font-head);
+      font-size: 1rem; font-weight: 600; line-height: 1.2;
+    }
+    .pmodal-project-card-count {
+      color: rgba(245,240,232,0.7);
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    /* Thumbnail grid */
+    .pmodal-thumbs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+    }
+    .pmodal-thumb {
+      aspect-ratio: 1; border-radius: var(--radius);
+      overflow: hidden; cursor: pointer;
+      background: var(--cream-dk);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .pmodal-thumb:hover { transform: scale(1.04); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+    .pmodal-thumb img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block;
+    }
+
+    /* Lightbox */
+    .pmodal-lightbox {
+      flex-direction: column;
+      padding: 60px 20px 70px;
+    }
+    .lb-img-wrap {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      max-height: calc(100vh - 140px);
+    }
+    .lb-img-wrap img {
+      max-width: min(90vw, 1200px);
+      max-height: calc(100vh - 140px);
+      object-fit: contain;
+      border-radius: 4px;
+    }
+    .lb-nav {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.12);
+      border: none; color: var(--white);
+      font-size: 2.8rem; line-height: 1;
+      width: 52px; height: 72px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; border-radius: 4px;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+    .lb-nav:hover { background: rgba(74,127,165,0.5); }
+    .lb-nav--prev { left: 12px; }
+    .lb-nav--next { right: 12px; }
+    .lb-counter {
+      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.65); font-size: 0.82rem;
+      font-weight: 700; letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 600px) {
+      .pmodal-box { padding: 28px 18px 36px; }
+      .pmodal-projects-grid { grid-template-columns: repeat(2, 1fr); }
+      .pmodal-thumbs-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .lb-nav { width: 40px; height: 56px; font-size: 2rem; }
+    }
   </style>
 </head>
 <body>
@@ -657,1113 +806,61 @@
         <p class="section-sub" style="color: rgba(245,240,232,0.6);">Every cabin is one-of-a-kind. Here's a look at what we've built across the Tennessee region.</p>
       </div>
       <div class="gallery-grid fade-up">
-
-        <!-- Project 1 -->
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project1-001.jpg" alt="Project 1" loading="lazy">
-          <div class="gallery-overlay"><span>Project 1</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project1-002.jpg" alt="Project 1" loading="lazy">
-          <div class="gallery-overlay"><span>Project 1</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project1-003.jpg" alt="Project 1" loading="lazy">
-          <div class="gallery-overlay"><span>Project 1</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project1-004.jpg" alt="Project 1" loading="lazy">
-          <div class="gallery-overlay"><span>Project 1</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project1-005.jpg" alt="Project 1" loading="lazy">
-          <div class="gallery-overlay"><span>Project 1</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project1-006.jpg" alt="Project 1" loading="lazy">
-          <div class="gallery-overlay"><span>Project 1</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project1-007.jpg" alt="Project 1" loading="lazy">
-          <div class="gallery-overlay"><span>Project 1</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project1-008.jpg" alt="Project 1" loading="lazy">
-          <div class="gallery-overlay"><span>Project 1</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project1-009.jpg" alt="Project 1" loading="lazy">
-          <div class="gallery-overlay"><span>Project 1</span></div>
-        </div>
-
-        <!-- Project 2 -->
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project2-001.jpg" alt="Project 2" loading="lazy">
-          <div class="gallery-overlay"><span>Project 2</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project2-002.jpg" alt="Project 2" loading="lazy">
-          <div class="gallery-overlay"><span>Project 2</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project2-003.jpg" alt="Project 2" loading="lazy">
-          <div class="gallery-overlay"><span>Project 2</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project2-004.jpg" alt="Project 2" loading="lazy">
-          <div class="gallery-overlay"><span>Project 2</span></div>
-        </div>
-
-        <!-- Project 3 -->
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project3-001.jpg" alt="Project 3" loading="lazy">
-          <div class="gallery-overlay"><span>Project 3</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project3-002.jpg" alt="Project 3" loading="lazy">
-          <div class="gallery-overlay"><span>Project 3</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project3-003.jpg" alt="Project 3" loading="lazy">
-          <div class="gallery-overlay"><span>Project 3</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project3-004.jpg" alt="Project 3" loading="lazy">
-          <div class="gallery-overlay"><span>Project 3</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project3-005.jpg" alt="Project 3" loading="lazy">
-          <div class="gallery-overlay"><span>Project 3</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project3-006.jpg" alt="Project 3" loading="lazy">
-          <div class="gallery-overlay"><span>Project 3</span></div>
-        </div>
-
-        <!-- Project 4 -->
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project4-001.jpg" alt="Project 4" loading="lazy">
-          <div class="gallery-overlay"><span>Project 4</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project4-002.jpg" alt="Project 4" loading="lazy">
-          <div class="gallery-overlay"><span>Project 4</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project4-003.jpg" alt="Project 4" loading="lazy">
-          <div class="gallery-overlay"><span>Project 4</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project4-004.jpg" alt="Project 4" loading="lazy">
-          <div class="gallery-overlay"><span>Project 4</span></div>
-        </div>
-
-        <!-- Project 5 -->
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-001.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-002.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-003.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-004.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-005.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-006.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-007.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-008.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-009.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-010.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-011.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-012.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-013.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-014.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-015.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-016.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-017.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-018.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-019.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-020.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-021.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-022.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-023.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-024.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-025.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-026.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-027.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-028.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-029.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-030.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-031.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-032.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-033.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-034.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-035.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-036.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-037.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-038.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-039.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-040.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-041.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-042.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-043.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-044.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-045.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-046.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-047.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-048.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-049.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-050.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-051.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-052.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-053.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-054.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-055.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-056.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-057.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-058.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-059.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-060.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-061.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-062.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-063.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-064.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-065.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-066.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-067.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-068.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-069.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-070.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-071.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-072.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-073.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-074.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-075.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-076.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-077.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-078.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-079.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-080.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-081.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-082.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-083.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-084.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-085.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-086.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-087.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-088.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-089.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-090.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-091.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-092.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-093.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-094.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-095.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-096.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-097.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-098.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-099.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-100.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-101.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-102.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-103.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-104.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-105.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-106.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-107.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-108.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-109.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-110.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-111.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-112.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-113.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-114.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-115.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-116.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-117.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-118.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-119.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-120.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-121.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-122.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-123.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-124.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-125.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-126.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-127.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-128.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-129.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-130.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-131.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-132.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-133.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-134.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-135.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-136.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-137.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-138.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-139.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-140.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-141.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-142.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-143.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-144.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-145.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-146.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-147.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-148.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-149.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-150.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-151.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-152.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-153.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-154.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-155.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-156.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-157.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-158.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-159.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-160.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-161.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-162.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-163.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-164.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-165.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-166.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-167.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-168.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-169.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-170.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-171.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-172.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-173.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-174.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-175.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-176.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-177.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-178.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-179.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-180.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-181.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-182.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-183.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-184.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-185.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-186.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-187.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-188.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-189.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-190.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-191.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-192.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-193.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-194.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-195.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-196.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-197.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-198.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-199.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-200.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-201.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-202.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-203.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-204.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-205.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-206.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-207.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-208.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-209.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-210.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-211.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-212.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-213.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-214.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-215.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project5-216.jpg" alt="Project 5" loading="lazy">
-          <div class="gallery-overlay"><span>Project 5</span></div>
-        </div>
-
-        <!-- Project 6 -->
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project6-001.jpg" alt="Project 6" loading="lazy">
-          <div class="gallery-overlay"><span>Project 6</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project6-002.jpg" alt="Project 6" loading="lazy">
-          <div class="gallery-overlay"><span>Project 6</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project6-003.jpg" alt="Project 6" loading="lazy">
-          <div class="gallery-overlay"><span>Project 6</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project6-004.jpg" alt="Project 6" loading="lazy">
-          <div class="gallery-overlay"><span>Project 6</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project6-005.jpg" alt="Project 6" loading="lazy">
-          <div class="gallery-overlay"><span>Project 6</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project6-006.jpg" alt="Project 6" loading="lazy">
-          <div class="gallery-overlay"><span>Project 6</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project6-007.jpg" alt="Project 6" loading="lazy">
-          <div class="gallery-overlay"><span>Project 6</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project6-008.jpg" alt="Project 6" loading="lazy">
-          <div class="gallery-overlay"><span>Project 6</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project6-009.jpg" alt="Project 6" loading="lazy">
-          <div class="gallery-overlay"><span>Project 6</span></div>
-        </div>
-
-        <!-- Project 7 -->
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project7-001.jpg" alt="Project 7" loading="lazy">
-          <div class="gallery-overlay"><span>Project 7</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project7-002.jpg" alt="Project 7" loading="lazy">
-          <div class="gallery-overlay"><span>Project 7</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project7-003.jpg" alt="Project 7" loading="lazy">
-          <div class="gallery-overlay"><span>Project 7</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project7-004.jpg" alt="Project 7" loading="lazy">
-          <div class="gallery-overlay"><span>Project 7</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project7-005.jpg" alt="Project 7" loading="lazy">
-          <div class="gallery-overlay"><span>Project 7</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project7-006.jpg" alt="Project 7" loading="lazy">
-          <div class="gallery-overlay"><span>Project 7</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project7-007.jpg" alt="Project 7" loading="lazy">
-          <div class="gallery-overlay"><span>Project 7</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project7-008.jpg" alt="Project 7" loading="lazy">
-          <div class="gallery-overlay"><span>Project 7</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project7-009.jpg" alt="Project 7" loading="lazy">
-          <div class="gallery-overlay"><span>Project 7</span></div>
-        </div>
-
-        <!-- Project 8 -->
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project8-001.jpg" alt="Project 8" loading="lazy">
-          <div class="gallery-overlay"><span>Project 8</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project8-002.jpg" alt="Project 8" loading="lazy">
-          <div class="gallery-overlay"><span>Project 8</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project8-003.jpg" alt="Project 8" loading="lazy">
-          <div class="gallery-overlay"><span>Project 8</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project8-004.jpg" alt="Project 8" loading="lazy">
-          <div class="gallery-overlay"><span>Project 8</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project8-005.jpg" alt="Project 8" loading="lazy">
-          <div class="gallery-overlay"><span>Project 8</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project8-006.jpg" alt="Project 8" loading="lazy">
-          <div class="gallery-overlay"><span>Project 8</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project8-007.jpg" alt="Project 8" loading="lazy">
-          <div class="gallery-overlay"><span>Project 8</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project8-008.jpg" alt="Project 8" loading="lazy">
-          <div class="gallery-overlay"><span>Project 8</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project8-009.jpg" alt="Project 8" loading="lazy">
-          <div class="gallery-overlay"><span>Project 8</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project8-010.jpg" alt="Project 8" loading="lazy">
-          <div class="gallery-overlay"><span>Project 8</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project8-011.jpg" alt="Project 8" loading="lazy">
-          <div class="gallery-overlay"><span>Project 8</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project8-012.jpg" alt="Project 8" loading="lazy">
-          <div class="gallery-overlay"><span>Project 8</span></div>
-        </div>
-        <div class="gallery-item" onclick="openLightbox(this)">
-          <img src="images/project8-013.jpg" alt="Project 8" loading="lazy">
-          <div class="gallery-overlay"><span>Project 8</span></div>
-        </div>
-
+        <div class="gallery-item teaser-item" style="grid-column:span 2;grid-row:span 2;" onclick="openProjectsModal()">
+          <img src="/timberexpress/images/project1-001.jpg" alt="Project 1" loading="lazy">
+          <div class="gallery-overlay"><span>View All Projects &rarr;</span></div>
+        </div>
+        <div class="gallery-item teaser-item" onclick="openProjectsModal()">
+          <img src="/timberexpress/images/project2-001.jpg" alt="Project 2" loading="lazy">
+          <div class="gallery-overlay"><span>View All Projects &rarr;</span></div>
+        </div>
+        <div class="gallery-item teaser-item" onclick="openProjectsModal()">
+          <img src="/timberexpress/images/project3-001.jpg" alt="Project 3" loading="lazy">
+          <div class="gallery-overlay"><span>View All Projects &rarr;</span></div>
+        </div>
+        <div class="gallery-item teaser-item" onclick="openProjectsModal()">
+          <img src="/timberexpress/images/project4-001.jpg" alt="Project 4" loading="lazy">
+          <div class="gallery-overlay"><span>View All Projects &rarr;</span></div>
+        </div>
+        <div class="gallery-item teaser-item" onclick="openProjectsModal()">
+          <img src="/timberexpress/images/project5-001.jpg" alt="Project 5" loading="lazy">
+          <div class="gallery-overlay"><span>View All Projects &rarr;</span></div>
+        </div>
+        <div class="gallery-item teaser-item" onclick="openProjectsModal()">
+          <img src="/timberexpress/images/project6-001.jpg" alt="Project 6" loading="lazy">
+          <div class="gallery-overlay"><span>View All Projects &rarr;</span></div>
+        </div>
+        <div class="gallery-item teaser-item" onclick="openProjectsModal()">
+          <img src="/timberexpress/images/project7-001.jpg" alt="Project 7" loading="lazy">
+          <div class="gallery-overlay"><span>View All Projects &rarr;</span></div>
+        </div>
+        <div class="gallery-item teaser-item" onclick="openProjectsModal()">
+          <img src="/timberexpress/images/project8-001.jpg" alt="Project 8" loading="lazy">
+          <div class="gallery-overlay"><span>View All Projects &rarr;</span></div>
+        </div>
+        <div class="gallery-item teaser-item" onclick="openProjectsModal()">
+          <img src="/timberexpress/images/project5-010.jpg" alt="Project 5" loading="lazy">
+          <div class="gallery-overlay"><span>View All Projects &rarr;</span></div>
+        </div>
+        <div class="gallery-item teaser-item" onclick="openProjectsModal()">
+          <img src="/timberexpress/images/project5-050.jpg" alt="Project 5" loading="lazy">
+          <div class="gallery-overlay"><span>View All Projects &rarr;</span></div>
+        </div>
+        <div class="gallery-item teaser-item" onclick="openProjectsModal()">
+          <img src="/timberexpress/images/project8-005.jpg" alt="Project 8" loading="lazy">
+          <div class="gallery-overlay"><span>View All Projects &rarr;</span></div>
+        </div>
+        <div class="gallery-item teaser-item" onclick="openProjectsModal()">
+          <img src="/timberexpress/images/project7-005.jpg" alt="Project 7" loading="lazy">
+          <div class="gallery-overlay"><span>View All Projects &rarr;</span></div>
+        </div>
+      </div>
+      <div class="fade-up" style="text-align:center;margin-top:40px;">
+        <button class="btn-primary" onclick="openProjectsModal()">View All 270 Photos &rarr;</button>
       </div>
 
     </div>
   </section>
-
-  <!-- LIGHTBOX -->
-  <div id="lightbox">
-    <button id="lightbox-close" onclick="closeLightbox()">&#215;</button>
-    <img id="lightbox-img" src="" alt="" />
-  </div>
 
   <!-- TRUST BAR -->
   <div id="trust">
@@ -1919,21 +1016,7 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-    // Lightbox
-    function openLightbox(item) {
-      const img = item.querySelector('img');
-      if (!img || img.style.display === 'none') return;
-      document.getElementById('lightbox-img').src = img.src;
-      document.getElementById('lightbox').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeLightbox() {
-      document.getElementById('lightbox').classList.remove('open');
-      document.body.style.overflow = '';
-    }
-    document.getElementById('lightbox').addEventListener('click', function(e) {
-      if (e.target === this) closeLightbox();
-    });
+    
 
     // Form
     async function handleSubmit(e) {
@@ -1962,6 +1045,151 @@
         alert('Something went wrong. Please call us directly at (954) 815-7402.');
       }
     }
+  
+    // ── PROJECTS DATA ──────────────────────────────────────────────
+    const PROJECTS = [
+  { id: 1, name: "Project 1", count: 9, photos: ['/timberexpress/images/project1-001.jpg', '/timberexpress/images/project1-002.jpg', '/timberexpress/images/project1-003.jpg', '/timberexpress/images/project1-004.jpg', '/timberexpress/images/project1-005.jpg', '/timberexpress/images/project1-006.jpg', '/timberexpress/images/project1-007.jpg', '/timberexpress/images/project1-008.jpg', '/timberexpress/images/project1-009.jpg'] },
+  { id: 2, name: "Project 2", count: 4, photos: ['/timberexpress/images/project2-001.jpg', '/timberexpress/images/project2-002.jpg', '/timberexpress/images/project2-003.jpg', '/timberexpress/images/project2-004.jpg'] },
+  { id: 3, name: "Project 3", count: 6, photos: ['/timberexpress/images/project3-001.jpg', '/timberexpress/images/project3-002.jpg', '/timberexpress/images/project3-003.jpg', '/timberexpress/images/project3-004.jpg', '/timberexpress/images/project3-005.jpg', '/timberexpress/images/project3-006.jpg'] },
+  { id: 4, name: "Project 4", count: 4, photos: ['/timberexpress/images/project4-001.jpg', '/timberexpress/images/project4-002.jpg', '/timberexpress/images/project4-003.jpg', '/timberexpress/images/project4-004.jpg'] },
+  { id: 5, name: "Project 5", count: 216, photos: ['/timberexpress/images/project5-001.jpg', '/timberexpress/images/project5-002.jpg', '/timberexpress/images/project5-003.jpg', '/timberexpress/images/project5-004.jpg', '/timberexpress/images/project5-005.jpg', '/timberexpress/images/project5-006.jpg', '/timberexpress/images/project5-007.jpg', '/timberexpress/images/project5-008.jpg', '/timberexpress/images/project5-009.jpg', '/timberexpress/images/project5-010.jpg', '/timberexpress/images/project5-011.jpg', '/timberexpress/images/project5-012.jpg', '/timberexpress/images/project5-013.jpg', '/timberexpress/images/project5-014.jpg', '/timberexpress/images/project5-015.jpg', '/timberexpress/images/project5-016.jpg', '/timberexpress/images/project5-017.jpg', '/timberexpress/images/project5-018.jpg', '/timberexpress/images/project5-019.jpg', '/timberexpress/images/project5-020.jpg', '/timberexpress/images/project5-021.jpg', '/timberexpress/images/project5-022.jpg', '/timberexpress/images/project5-023.jpg', '/timberexpress/images/project5-024.jpg', '/timberexpress/images/project5-025.jpg', '/timberexpress/images/project5-026.jpg', '/timberexpress/images/project5-027.jpg', '/timberexpress/images/project5-028.jpg', '/timberexpress/images/project5-029.jpg', '/timberexpress/images/project5-030.jpg', '/timberexpress/images/project5-031.jpg', '/timberexpress/images/project5-032.jpg', '/timberexpress/images/project5-033.jpg', '/timberexpress/images/project5-034.jpg', '/timberexpress/images/project5-035.jpg', '/timberexpress/images/project5-036.jpg', '/timberexpress/images/project5-037.jpg', '/timberexpress/images/project5-038.jpg', '/timberexpress/images/project5-039.jpg', '/timberexpress/images/project5-040.jpg', '/timberexpress/images/project5-041.jpg', '/timberexpress/images/project5-042.jpg', '/timberexpress/images/project5-043.jpg', '/timberexpress/images/project5-044.jpg', '/timberexpress/images/project5-045.jpg', '/timberexpress/images/project5-046.jpg', '/timberexpress/images/project5-047.jpg', '/timberexpress/images/project5-048.jpg', '/timberexpress/images/project5-049.jpg', '/timberexpress/images/project5-050.jpg', '/timberexpress/images/project5-051.jpg', '/timberexpress/images/project5-052.jpg', '/timberexpress/images/project5-053.jpg', '/timberexpress/images/project5-054.jpg', '/timberexpress/images/project5-055.jpg', '/timberexpress/images/project5-056.jpg', '/timberexpress/images/project5-057.jpg', '/timberexpress/images/project5-058.jpg', '/timberexpress/images/project5-059.jpg', '/timberexpress/images/project5-060.jpg', '/timberexpress/images/project5-061.jpg', '/timberexpress/images/project5-062.jpg', '/timberexpress/images/project5-063.jpg', '/timberexpress/images/project5-064.jpg', '/timberexpress/images/project5-065.jpg', '/timberexpress/images/project5-066.jpg', '/timberexpress/images/project5-067.jpg', '/timberexpress/images/project5-068.jpg', '/timberexpress/images/project5-069.jpg', '/timberexpress/images/project5-070.jpg', '/timberexpress/images/project5-071.jpg', '/timberexpress/images/project5-072.jpg', '/timberexpress/images/project5-073.jpg', '/timberexpress/images/project5-074.jpg', '/timberexpress/images/project5-075.jpg', '/timberexpress/images/project5-076.jpg', '/timberexpress/images/project5-077.jpg', '/timberexpress/images/project5-078.jpg', '/timberexpress/images/project5-079.jpg', '/timberexpress/images/project5-080.jpg', '/timberexpress/images/project5-081.jpg', '/timberexpress/images/project5-082.jpg', '/timberexpress/images/project5-083.jpg', '/timberexpress/images/project5-084.jpg', '/timberexpress/images/project5-085.jpg', '/timberexpress/images/project5-086.jpg', '/timberexpress/images/project5-087.jpg', '/timberexpress/images/project5-088.jpg', '/timberexpress/images/project5-089.jpg', '/timberexpress/images/project5-090.jpg', '/timberexpress/images/project5-091.jpg', '/timberexpress/images/project5-092.jpg', '/timberexpress/images/project5-093.jpg', '/timberexpress/images/project5-094.jpg', '/timberexpress/images/project5-095.jpg', '/timberexpress/images/project5-096.jpg', '/timberexpress/images/project5-097.jpg', '/timberexpress/images/project5-098.jpg', '/timberexpress/images/project5-099.jpg', '/timberexpress/images/project5-100.jpg', '/timberexpress/images/project5-101.jpg', '/timberexpress/images/project5-102.jpg', '/timberexpress/images/project5-103.jpg', '/timberexpress/images/project5-104.jpg', '/timberexpress/images/project5-105.jpg', '/timberexpress/images/project5-106.jpg', '/timberexpress/images/project5-107.jpg', '/timberexpress/images/project5-108.jpg', '/timberexpress/images/project5-109.jpg', '/timberexpress/images/project5-110.jpg', '/timberexpress/images/project5-111.jpg', '/timberexpress/images/project5-112.jpg', '/timberexpress/images/project5-113.jpg', '/timberexpress/images/project5-114.jpg', '/timberexpress/images/project5-115.jpg', '/timberexpress/images/project5-116.jpg', '/timberexpress/images/project5-117.jpg', '/timberexpress/images/project5-118.jpg', '/timberexpress/images/project5-119.jpg', '/timberexpress/images/project5-120.jpg', '/timberexpress/images/project5-121.jpg', '/timberexpress/images/project5-122.jpg', '/timberexpress/images/project5-123.jpg', '/timberexpress/images/project5-124.jpg', '/timberexpress/images/project5-125.jpg', '/timberexpress/images/project5-126.jpg', '/timberexpress/images/project5-127.jpg', '/timberexpress/images/project5-128.jpg', '/timberexpress/images/project5-129.jpg', '/timberexpress/images/project5-130.jpg', '/timberexpress/images/project5-131.jpg', '/timberexpress/images/project5-132.jpg', '/timberexpress/images/project5-133.jpg', '/timberexpress/images/project5-134.jpg', '/timberexpress/images/project5-135.jpg', '/timberexpress/images/project5-136.jpg', '/timberexpress/images/project5-137.jpg', '/timberexpress/images/project5-138.jpg', '/timberexpress/images/project5-139.jpg', '/timberexpress/images/project5-140.jpg', '/timberexpress/images/project5-141.jpg', '/timberexpress/images/project5-142.jpg', '/timberexpress/images/project5-143.jpg', '/timberexpress/images/project5-144.jpg', '/timberexpress/images/project5-145.jpg', '/timberexpress/images/project5-146.jpg', '/timberexpress/images/project5-147.jpg', '/timberexpress/images/project5-148.jpg', '/timberexpress/images/project5-149.jpg', '/timberexpress/images/project5-150.jpg', '/timberexpress/images/project5-151.jpg', '/timberexpress/images/project5-152.jpg', '/timberexpress/images/project5-153.jpg', '/timberexpress/images/project5-154.jpg', '/timberexpress/images/project5-155.jpg', '/timberexpress/images/project5-156.jpg', '/timberexpress/images/project5-157.jpg', '/timberexpress/images/project5-158.jpg', '/timberexpress/images/project5-159.jpg', '/timberexpress/images/project5-160.jpg', '/timberexpress/images/project5-161.jpg', '/timberexpress/images/project5-162.jpg', '/timberexpress/images/project5-163.jpg', '/timberexpress/images/project5-164.jpg', '/timberexpress/images/project5-165.jpg', '/timberexpress/images/project5-166.jpg', '/timberexpress/images/project5-167.jpg', '/timberexpress/images/project5-168.jpg', '/timberexpress/images/project5-169.jpg', '/timberexpress/images/project5-170.jpg', '/timberexpress/images/project5-171.jpg', '/timberexpress/images/project5-172.jpg', '/timberexpress/images/project5-173.jpg', '/timberexpress/images/project5-174.jpg', '/timberexpress/images/project5-175.jpg', '/timberexpress/images/project5-176.jpg', '/timberexpress/images/project5-177.jpg', '/timberexpress/images/project5-178.jpg', '/timberexpress/images/project5-179.jpg', '/timberexpress/images/project5-180.jpg', '/timberexpress/images/project5-181.jpg', '/timberexpress/images/project5-182.jpg', '/timberexpress/images/project5-183.jpg', '/timberexpress/images/project5-184.jpg', '/timberexpress/images/project5-185.jpg', '/timberexpress/images/project5-186.jpg', '/timberexpress/images/project5-187.jpg', '/timberexpress/images/project5-188.jpg', '/timberexpress/images/project5-189.jpg', '/timberexpress/images/project5-190.jpg', '/timberexpress/images/project5-191.jpg', '/timberexpress/images/project5-192.jpg', '/timberexpress/images/project5-193.jpg', '/timberexpress/images/project5-194.jpg', '/timberexpress/images/project5-195.jpg', '/timberexpress/images/project5-196.jpg', '/timberexpress/images/project5-197.jpg', '/timberexpress/images/project5-198.jpg', '/timberexpress/images/project5-199.jpg', '/timberexpress/images/project5-200.jpg', '/timberexpress/images/project5-201.jpg', '/timberexpress/images/project5-202.jpg', '/timberexpress/images/project5-203.jpg', '/timberexpress/images/project5-204.jpg', '/timberexpress/images/project5-205.jpg', '/timberexpress/images/project5-206.jpg', '/timberexpress/images/project5-207.jpg', '/timberexpress/images/project5-208.jpg', '/timberexpress/images/project5-209.jpg', '/timberexpress/images/project5-210.jpg', '/timberexpress/images/project5-211.jpg', '/timberexpress/images/project5-212.jpg', '/timberexpress/images/project5-213.jpg', '/timberexpress/images/project5-214.jpg', '/timberexpress/images/project5-215.jpg', '/timberexpress/images/project5-216.jpg'] },
+  { id: 6, name: "Project 6", count: 9, photos: ['/timberexpress/images/project6-001.jpg', '/timberexpress/images/project6-002.jpg', '/timberexpress/images/project6-003.jpg', '/timberexpress/images/project6-004.jpg', '/timberexpress/images/project6-005.jpg', '/timberexpress/images/project6-006.jpg', '/timberexpress/images/project6-007.jpg', '/timberexpress/images/project6-008.jpg', '/timberexpress/images/project6-009.jpg'] },
+  { id: 7, name: "Project 7", count: 9, photos: ['/timberexpress/images/project7-001.jpg', '/timberexpress/images/project7-002.jpg', '/timberexpress/images/project7-003.jpg', '/timberexpress/images/project7-004.jpg', '/timberexpress/images/project7-005.jpg', '/timberexpress/images/project7-006.jpg', '/timberexpress/images/project7-007.jpg', '/timberexpress/images/project7-008.jpg', '/timberexpress/images/project7-009.jpg'] },
+  { id: 8, name: "Project 8", count: 13, photos: ['/timberexpress/images/project8-001.jpg', '/timberexpress/images/project8-002.jpg', '/timberexpress/images/project8-003.jpg', '/timberexpress/images/project8-004.jpg', '/timberexpress/images/project8-005.jpg', '/timberexpress/images/project8-006.jpg', '/timberexpress/images/project8-007.jpg', '/timberexpress/images/project8-008.jpg', '/timberexpress/images/project8-009.jpg', '/timberexpress/images/project8-010.jpg', '/timberexpress/images/project8-011.jpg', '/timberexpress/images/project8-012.jpg', '/timberexpress/images/project8-013.jpg'] },
+];
+
+    let currentProject = null;
+    let lbIndex = 0;
+
+    // ── LEVEL 1: Projects modal ─────────────────────────────────────
+    function openProjectsModal() {
+      const grid = document.getElementById('pmodal-projects-grid');
+      if (!grid.children.length) {
+        grid.innerHTML = PROJECTS.map(p => `
+          <div class="pmodal-project-card" onclick="openGalleryModal(${p.id})">
+            <img src="${p.photos[0]}" alt="${p.name}" loading="lazy">
+            <div class="pmodal-project-card-label">
+              <div class="pmodal-project-card-name">${p.name}</div>
+              <div class="pmodal-project-card-count">${p.count} photos</div>
+            </div>
+          </div>`).join('');
+      }
+      document.getElementById('projects-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProjectsModal() {
+      document.getElementById('projects-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function handlePModalOverlayClick(e) {
+      if (e.target === e.currentTarget) closeProjectsModal();
+    }
+
+    // ── LEVEL 2: Gallery modal ──────────────────────────────────────
+    function openGalleryModal(projectId) {
+      currentProject = PROJECTS.find(p => p.id === projectId);
+      document.getElementById('gallery-modal-title').textContent = currentProject.name;
+      document.getElementById('gallery-modal-count').textContent = currentProject.count + ' photos';
+
+      const grid = document.getElementById('pmodal-thumbs-grid');
+      grid.innerHTML = currentProject.photos.map((src, i) => `
+        <div class="pmodal-thumb" onclick="openLightbox2(${i})">
+          <img src="${src}" alt="${currentProject.name} photo ${i+1}" loading="lazy">
+        </div>`).join('');
+
+      document.getElementById('projects-modal').classList.remove('open');
+      document.getElementById('gallery-modal').classList.add('open');
+    }
+
+    function closeGalleryModal() {
+      document.getElementById('gallery-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function backToProjects() {
+      document.getElementById('gallery-modal').classList.remove('open');
+      document.getElementById('projects-modal').classList.add('open');
+    }
+
+    function handleGModalOverlayClick(e) {
+      if (e.target === e.currentTarget) closeGalleryModal();
+    }
+
+    // ── LEVEL 3: Lightbox ───────────────────────────────────────────
+    function openLightbox2(index) {
+      lbIndex = index;
+      renderLightbox();
+      document.getElementById('modal-lightbox').classList.add('open');
+    }
+
+    function closeLightbox2() {
+      document.getElementById('modal-lightbox').classList.remove('open');
+    }
+
+    function handleLBOverlayClick(e) {
+      if (e.target === e.currentTarget) closeLightbox2();
+    }
+
+    function lbNav(dir) {
+      lbIndex = (lbIndex + dir + currentProject.photos.length) % currentProject.photos.length;
+      renderLightbox();
+    }
+
+    function renderLightbox() {
+      document.getElementById('modal-lightbox-img').src = currentProject.photos[lbIndex];
+      document.getElementById('lb-counter').textContent =
+        (lbIndex + 1) + ' / ' + currentProject.photos.length;
+    }
+
+    // Keyboard nav
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('modal-lightbox').classList.contains('open')) return;
+      if (e.key === 'ArrowRight') lbNav(1);
+      if (e.key === 'ArrowLeft') lbNav(-1);
+      if (e.key === 'Escape') closeLightbox2();
+    });
   </script>
+
+  <!-- PROJECTS MODAL (Level 1: project selector) -->
+  <div id="projects-modal" class="pmodal-overlay" onclick="handlePModalOverlayClick(event)">
+    <div class="pmodal-box">
+      <button class="pmodal-close" onclick="closeProjectsModal()" aria-label="Close">&times;</button>
+      <div class="pmodal-header">
+        <h2 class="pmodal-title">Our Projects</h2>
+        <p class="pmodal-sub">Select a project to browse photos</p>
+      </div>
+      <div class="pmodal-projects-grid" id="pmodal-projects-grid">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY MODAL (Level 2: project photo grid) -->
+  <div id="gallery-modal" class="pmodal-overlay" onclick="handleGModalOverlayClick(event)">
+    <div class="pmodal-box pmodal-box--gallery">
+      <button class="pmodal-close" onclick="closeGalleryModal()" aria-label="Close">&times;</button>
+      <div class="pmodal-header pmodal-header--gallery">
+        <button class="pmodal-back" onclick="backToProjects()">&#8592; All Projects</button>
+        <h2 class="pmodal-title" id="gallery-modal-title">Project 1</h2>
+        <p class="pmodal-sub" id="gallery-modal-count"></p>
+      </div>
+      <div class="pmodal-thumbs-grid" id="pmodal-thumbs-grid">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX (Level 3: full photo + nav) -->
+  <div id="modal-lightbox" class="pmodal-overlay pmodal-lightbox" onclick="handleLBOverlayClick(event)">
+    <button class="pmodal-close pmodal-close--lb" onclick="closeLightbox2()" aria-label="Close">&times;</button>
+    <button class="lb-nav lb-nav--prev" onclick="lbNav(-1)" aria-label="Previous">&#8249;</button>
+    <div class="lb-img-wrap">
+      <img id="modal-lightbox-img" src="" alt="" />
+    </div>
+    <button class="lb-nav lb-nav--next" onclick="lbNav(1)" aria-label="Next">&#8250;</button>
+    <div class="lb-counter" id="lb-counter"></div>
+  </div>
 </body>
 </html>
