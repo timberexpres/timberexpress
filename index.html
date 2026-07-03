@@ -606,11 +606,8 @@
     }
 
     /* Lightbox */
-    /* ── LIGHTBOX CAROUSEL ──────────────────────────────────── */
-    .pmodal-lightbox {
-      padding: 0;
-      background: #000;
-    }
+    /* ── LIGHTBOX CAROUSEL ───────────────────────────────────── */
+    .pmodal-lightbox { padding: 0; background: #000; }
     .lb-close {
       position: fixed; top: 16px; right: 20px; z-index: 20;
       background: none; border: none; color: var(--white);
@@ -634,11 +631,9 @@
       display: flex; align-items: center; justify-content: center;
     }
     .lb-slide img {
-      max-width: 100vw;
-      max-height: 100vh;
+      max-width: 100vw; max-height: 100vh;
       object-fit: contain;
-      user-select: none;
-      -webkit-user-drag: none;
+      user-select: none; -webkit-user-drag: none;
     }
     .lb-nav {
       position: fixed; top: 50%; transform: translateY(-50%);
@@ -648,9 +643,7 @@
       width: 52px; height: 72px;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; border-radius: 4px;
-      transition: background 0.2s;
-      z-index: 10;
-      pointer-events: auto;
+      transition: background 0.2s; z-index: 10;
     }
     .lb-nav:hover { background: rgba(74,127,165,0.5); }
     .lb-nav--prev { left: 12px; }
@@ -661,7 +654,6 @@
       font-weight: 700; letter-spacing: 0.1em; z-index: 10;
       background: rgba(0,0,0,0.4); padding: 4px 12px; border-radius: 20px;
     }
-
     @media (max-width: 600px) {
       .pmodal-box { padding: 28px 18px 36px; }
       .pmodal-projects-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1110,41 +1102,72 @@
       if (e.target === e.currentTarget) closeGalleryModal();
     }
 
-    // ── LEVEL 3: Lightbox carousel ──────────────────────────────────
+    // ── LEVEL 3: Lightbox — infinite swipe carousel ──────────────────
+    // Prepend a clone of the last slide and append a clone of the first.
+    // When the user scrolls onto a ghost clone, silently jump to the real
+    // slide — giving seamless infinite looping with native scroll-snap physics.
+
+    let lbIgnoreScroll = false;
+
     function openLightbox2(index) {
       lbIndex = index;
       buildCarousel();
       document.getElementById('modal-lightbox').classList.add('open');
       requestAnimationFrame(() => {
         const carousel = document.getElementById('lb-carousel');
-        carousel.scrollTo({ left: index * window.innerWidth, behavior: 'instant' });
+        // Real slides start at DOM position 1 (position 0 is the ghost clone)
+        carousel.scrollTo({ left: (lbIndex + 1) * window.innerWidth, behavior: 'instant' });
         updateCounter();
       });
     }
 
     function buildCarousel() {
       const photos = currentProject.photos;
+      const n = photos.length;
       const carousel = document.getElementById('lb-carousel');
-      carousel.innerHTML = photos.map((src, i) => `
-        <div class="lb-slide">
-          <img data-src="${src}" alt="${currentProject.name} photo ${i+1}" />
-        </div>`).join('');
-      loadSlide(lbIndex);
-      loadSlide(lbIndex - 1);
-      loadSlide(lbIndex + 1);
+      // Layout: [ghost of last] + [all real slides] + [ghost of first]
+      const srcs = [photos[n - 1], ...photos, photos[0]];
+      carousel.innerHTML = srcs.map((src, i) => {
+        const eager = i >= lbIndex && i <= lbIndex + 2;
+        return `<div class="lb-slide"><img ${eager ? `src="${src}"` : `data-src="${src}"`} alt="${currentProject.name}" /></div>`;
+      }).join('');
       carousel.addEventListener('scroll', onCarouselScroll, { passive: true });
     }
 
-    function loadSlide(i) {
+    function loadSlide(realIndex) {
       const photos = currentProject.photos;
-      if (i < 0 || i >= photos.length) return;
+      if (realIndex < 0 || realIndex >= photos.length) return;
       const imgs = document.querySelectorAll('.lb-slide img');
-      if (imgs[i] && !imgs[i].src) imgs[i].src = imgs[i].dataset.src;
+      const domIndex = realIndex + 1;
+      if (imgs[domIndex] && !imgs[domIndex].src) imgs[domIndex].src = imgs[domIndex].dataset.src;
     }
 
     function onCarouselScroll() {
+      if (lbIgnoreScroll) return;
       const carousel = document.getElementById('lb-carousel');
-      const newIndex = Math.round(carousel.scrollLeft / window.innerWidth);
+      const n = currentProject.photos.length;
+      const domIndex = Math.round(carousel.scrollLeft / window.innerWidth);
+
+      if (domIndex === 0) {
+        // Scrolled onto ghost clone of last → jump to real last
+        lbIgnoreScroll = true;
+        lbIndex = n - 1;
+        carousel.scrollTo({ left: n * window.innerWidth, behavior: 'instant' });
+        updateCounter();
+        setTimeout(() => { lbIgnoreScroll = false; }, 50);
+        return;
+      }
+      if (domIndex === n + 1) {
+        // Scrolled onto ghost clone of first → jump to real first
+        lbIgnoreScroll = true;
+        lbIndex = 0;
+        carousel.scrollTo({ left: window.innerWidth, behavior: 'instant' });
+        updateCounter();
+        setTimeout(() => { lbIgnoreScroll = false; }, 50);
+        return;
+      }
+
+      const newIndex = domIndex - 1;
       if (newIndex !== lbIndex) {
         lbIndex = newIndex;
         updateCounter();
@@ -1167,10 +1190,10 @@
     }
 
     function lbNav(dir) {
-      const photos = currentProject.photos;
-      const newIndex = Math.max(0, Math.min(photos.length - 1, lbIndex + dir));
+      const n = currentProject.photos.length;
+      lbIndex = ((lbIndex + dir) % n + n) % n;
       const carousel = document.getElementById('lb-carousel');
-      carousel.scrollTo({ left: newIndex * window.innerWidth, behavior: 'smooth' });
+      carousel.scrollTo({ left: (lbIndex + 1) * window.innerWidth, behavior: 'smooth' });
     }
 
     // Keyboard nav
@@ -1211,7 +1234,7 @@
     </div>
   </div>
 
-  <!-- LIGHTBOX (Level 3: swipe carousel) -->
+  <!-- LIGHTBOX (Level 3: swipe carousel, infinite loop) -->
   <div id="modal-lightbox" class="pmodal-overlay pmodal-lightbox">
     <button class="lb-close" onclick="closeLightbox2()" aria-label="Close">&times;</button>
     <div class="lb-carousel" id="lb-carousel"></div>
